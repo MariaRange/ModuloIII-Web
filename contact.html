@@ -41,7 +41,7 @@
 	<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 	<link rel="shortcut icon" href="favicon.ico">
 	<link rel="icon" href="images/logo-modulo-3.png" type="image/png">
-
+	
 	<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,300' rel='stylesheet' type='text/css'>
 	
 	<!-- Animate.css -->
@@ -52,19 +52,22 @@
 	<link rel="stylesheet" href="css/bootstrap.css">
 	<!-- Superfish -->
 	<link rel="stylesheet" href="css/superfish.css">
-
+	
 	<link rel="stylesheet" href="css/style.css">
-
-
+	
+	
 	<!-- Modernizr JS -->
 	<script src="js/modernizr-2.6.2.min.js"></script>
 	<!-- FOR IE9 below -->
 	<!--[if lt IE 9]>
-	<script src="js/respond.min.js"></script>
-	<![endif]-->
-
-	</head>
-	<body>
+		<script src="js/respond.min.js"></script>
+		<![endif]-->
+		
+		<script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>
+		<script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" crossorigin></script>
+		<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+		</head>
+		<body>
 		<div id="fh5co-wrapper">
 		<div id="fh5co-page">
 		<div id="fh5co-header">
@@ -135,51 +138,7 @@
 		<!-- end:header-top -->
 		
 		<div id="fh5co-contact" class="animate-box">
-			<div class="container">
-				<form action="#">
-					<div class="row">
-						<div class="col-md-6">
-							<h3 class="section-title">Nuestra dirección</h3>
-							<p>Para contactarnos puedes llamar a nuestro numero telefónico, enviar un email, o visitarnos en nuestra instalación.</p>
-							<ul class="contact-info">
-								<li><i class="icon-location-pin"></i> Carretera Durango Mexico Km 7 Dolores Hidalgo, 34300 Durango, Dgo.</li>
-								<li><i class="icon-phone2"></i>+ 618 197 97 46</li>
-								<li><i class="icon-mail"></i><a href="https://mail.google.com/mail/u/0/#inbox?compose=DmwnWtMlQgdHGXMpHzLzDNjxrqBbqfwlbnRhFBGfmsnjPFBpFxqzmzKcckPFRpSfXXVWJRdQccdq">moduloiiigpe.victoria@hotmail.com</a></li>
-								<!--<li><i class="icon-globe2"></i><a href="#">www.yoursite.com</a></li>-->
-							</ul>
-						</div>
-						<div class="col-md-6">
-							<div class="row">
-								<div class="col-md-6">
-									<div class="form-group">
-										<input type="text" class="form-control" placeholder="Nombre" name="name">
-									</div>
-								</div>
-								<div class="col-md-6">
-									<div class="form-group">
-										<input type="text" class="form-control" placeholder="Email" name="email">
-									</div>
-								</div>
-								<div class="col-md-12">
-									<div class="form-group">
-										<input type="number" class="form-control" placeholder="Telefono" name="phone">
-									</div>
-								</div>
-								<div class="col-md-12">
-									<div class="form-group">
-										<textarea name="" class="form-control" id="" cols="30" rows="7" placeholder="Mensaje" name="message"></textarea>
-									</div>
-								</div>
-								<div class="col-md-12">
-									<div class="form-group">
-										<input type="submit" value="Enviar Mensaje" class="btn btn-primary">
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</form>
-				
+			<div class="container" id="formulario">
 			</div>
 		</div>
 		<!-- END fh5co-contact -->
@@ -237,6 +196,148 @@
 	<!-- Main JS (Do not remove) -->
 	<script src="js/main.js"></script>
 
+	<script type="text/babel">
+
+
+
+function Form() {
+  const [form, setForm] = React.useState({
+    name: "",
+    email: "",
+    phone: "",
+    message: "",
+  });
+
+  const [msg, setMsg] = React.useState({});
+
+  const { name, email, phone, message } = form;
+
+  const handleInput = (e) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const cuerpo = JSON.stringify(form);
+
+    const link = "https://server-2maria.herokuapp.com/form";
+
+    fetch(link, {
+      mode: "cors",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: cuerpo,
+    }).then((res) => res.json().then((data) => setMsg(data)));
+    alert("Mensaje enviado");
+  };
+
+  return (
+    
+      <form onSubmit={handleSubmit} method="POST">
+        <div className="row">
+          <div className="col-md-6">
+            <h3 className="section-title">Nuestra dirección</h3>
+            <p>
+              Para contactarnos puedes llamar a nuestro numero telefónico,
+              enviar un email, o visitarnos en nuestra instalación.
+            </p>
+            <ul className="contact-info">
+              <li>
+                <i className="icon-location-pin"></i> Carretera Durango Mexico
+                Km 7 Dolores Hidalgo, 34300 Durango, Dgo.
+              </li>
+              <li>
+                <i className="icon-phone2"></i>+ 618 197 97 46
+              </li>
+              <li>
+                <i className="icon-mail"></i>
+                <a href="https://mail.google.com/mail/u/0/#inbox?compose=DmwnWtMlQgdHGXMpHzLzDNjxrqBbqfwlbnRhFBGfmsnjPFBpFxqzmzKcckPFRpSfXXVWJRdQccdq">
+                  moduloiiigpe.victoria@hotmail.com
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div className="col-md-6">
+            <div className="row">
+              <div className="col-md-6">
+                <div className="form-group">
+                  <input
+                    value={name}
+                    onChange={handleInput}
+                    type="text"
+                    className="form-control"
+                    placeholder="Nombre"
+                    name="name"
+                  />
+                </div>
+              </div>
+              <div className="col-md-6">
+                <div className="form-group">
+                  <input
+                    value={email}
+                    onChange={handleInput}
+                    type="text"
+                    className="form-control"
+                    placeholder="Email"
+                    name="email"
+                  />
+                </div>
+              </div>
+              <div className="col-md-12">
+                <div className="form-group">
+                  <input
+                    value={phone}
+                    onChange={handleInput}
+                    type="number"
+                    className="form-control"
+                    placeholder="Telefono"
+                    name="phone"
+                  />
+                </div>
+              </div>
+              <div className="col-md-12">
+                <div className="form-group">
+                  <textarea
+                    value={message}
+                    onChange={handleInput}
+                    className="form-control"
+                    id=""
+                    cols="30"
+                    rows="7"
+                    placeholder="Mensaje"
+                    name="message"
+                  ></textarea>
+                </div>
+              </div>
+              <div className="col-md-12">
+                <div className="form-group">
+                  <input
+                    type="submit"
+                    value="Enviar Mensaje"
+                    className="btn btn-primary"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+
+  );
+}
+
+
+	ReactDOM.render(
+        <Form/>,
+        document.getElementById("formulario")
+      );
+	</script>
 	</body>
 </html>
 
